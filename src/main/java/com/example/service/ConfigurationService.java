@@ -26,4 +26,6 @@ public class ConfigurationService {
 	    	return configurationRepository.findAll();
 	    }
 	    
+	    
+	    
 }

@@ -1,9 +1,13 @@
 package com.example.model;
 
 import java.time.LocalDateTime;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectWriter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,24 +35,25 @@ public class Configuration {
  @Column(name = "created_at", nullable = false)
  private LocalDateTime createdAt;
  
- 
 
+ @Column(name = "complianceStatus", nullable = false)
+ private String complianceStatus;
  
-// public String getFormattedConfigData() {
-//	    try {
-//	        ObjectMapper mapper = new ObjectMapper();
-//	        Object json = mapper.readValue(configData, Object.class);
-//	        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-//	        return writer.writeValueAsString(json);
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	        return configData; // return unformatted JSON in case of an error
-//	    }
-//	}
+ 
 		public Long getId() {
 			return id;
 		}
 		
+		public String getComplianceStatus() {
+			return complianceStatus;
+		}
+
+		public void setComplianceStatus(String complianceStatus) {
+			this.complianceStatus = complianceStatus;
+		}
+
+		
+
 		public void setId(Long id) {
 			this.id = id;
 		}
@@ -96,3 +101,17 @@ public class Configuration {
 		}
 
 }
+
+
+
+//public String getFormattedConfigData() {
+//try {
+//    ObjectMapper mapper = new ObjectMapper();
+//    Object json = mapper.readValue(configData, Object.class);
+//    ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+//    return writer.writeValueAsString(json);
+//} catch (Exception e) {
+//    e.printStackTrace();
+//    return configData; // return unformatted JSON in case of an error
+//}
+//}

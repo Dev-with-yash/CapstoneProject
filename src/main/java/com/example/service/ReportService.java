@@ -1,10 +1,11 @@
 package com.example.service;
+
 import java.io.IOException;
-//import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-//import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Configuration;
@@ -20,22 +21,33 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class ReportService {
     
-    public byte[] generateReport(List<Configuration> configs) throws JRException, IOException {
+    @Autowired
+    private ComplianceService complianceService;
 
+    public byte[] generateReport(List<Configuration> configs) throws JRException, IOException {
         try {
-        	String reportTemplatePath = "C:\\Users\\akasa\\Desktop\\Capstone\\report_template.jrxml";
             System.out.println("Loading report template...");
             
-            JasperReport jasperReport = JasperCompileManager.compileReport(reportTemplatePath);
+            InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report_template.jrxml");
+            if (reportStream == null) {
+                throw new JRException("Report template not found in classpath");
+            }
+            
+            JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
             System.out.println("Report template compiled.");
             
-           
-
+            for (Configuration config : configs) {
+                List<String> nonCompliantRules = complianceService.analyzeCompliance(config);
+                config.setComplianceStatus(String.join(", ", nonCompliantRules));
+            }
+            
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(configs);
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<>(), dataSource);
             System.out.println("Report data filled.");
-
+             
             return JasperExportManager.exportReportToPdf(jasperPrint);
+
+            
         } catch (JRException e) {
             System.err.println("Error generating report: " + e.getMessage());
             e.printStackTrace();
@@ -43,18 +55,3 @@ public class ReportService {
         }
     }
 }
-
-
-
-
-// Convert configurations to a map with formatted JSON
-
-//List<Map<String, Object>> dataSourceList = new ArrayList<>();
-//for (Configuration config : configs) {
-//  Map<String, Object> dataSourceMap = new HashMap<>();
-//  dataSourceMap.put("deviceId", config.getDeviceId());
-//  dataSourceMap.put("configData", config.getConfigData());
-//  dataSourceMap.put("version", config.getVersion());
-//  dataSourceMap.put("createdAt", config.getCreatedAt());
-//  dataSourceList.add(dataSourceMap);
-//}

@@ -28,7 +28,7 @@ public class ComplianceService {
 	 for (ComplianceRule rule : rules) {
 		 if (!rule.evaluate(config)) {
 			 nonCompliantRules.add(rule.getRuleId()+" : "+rule.getDescription());
-			 alertService.sendAlert("Compliance violation detected: " + rule.getDescription());
+			 alertService.sendAlert("Compliance violation detected: " + rule.getDescription(), config.getDeviceId());
 		 }
 		 
 	 }

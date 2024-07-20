@@ -24,6 +24,6 @@ public class ComplianceServiceTest {
  
  assertTrue(result.isEmpty());
  // Verify that alert is sent (Check console output for alert message)
-  alertService.logAlert("Alert: Compliance violation detected: Test Rule");
+  alertService.logAlert("device id","Alert: Compliance violation detected: Test Rule");
  }
 }

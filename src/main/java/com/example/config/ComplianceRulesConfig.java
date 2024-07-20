@@ -32,7 +32,7 @@ public class ComplianceRulesConfig {
     		complianceService.addRule(rule1);
 
         
-        ComplianceRule rule2 = new ComplianceRule("rule2", "IP address should be in a valid format", 
+        ComplianceRule rule2 = new ComplianceRule("Ipaddress rule", "IP address should be in a valid format", 
         	    config -> {
         	        try {
         	            JsonNode configData = objectMapper.readTree(config.getConfigData());
@@ -45,7 +45,7 @@ public class ComplianceRulesConfig {
         	        }
         	    });
         	complianceService.addRule(rule2);
-        	ComplianceRule rule3 = new ComplianceRule("rule3", "Subnet mask should be '255.255.255.0'", 
+        	ComplianceRule rule3 = new ComplianceRule("subnetRule", "Subnet mask should be '255.255.255.0'", 
         		    config -> {
         		        try {
         		            JsonNode configData = objectMapper.readTree(config.getConfigData());
@@ -57,7 +57,7 @@ public class ComplianceRulesConfig {
         		    });
         		complianceService.addRule(rule3);
         		
-        		ComplianceRule rule4 = new ComplianceRule("rule4", "Gateway should be '10.10.3.1'", 
+        		ComplianceRule rule4 = new ComplianceRule("GatewayRule", "Gateway should be '10.10.3.1'", 
         			    config -> {
         			        try {
         			            JsonNode configData = objectMapper.readTree(config.getConfigData());
@@ -68,6 +68,23 @@ public class ComplianceRulesConfig {
         			        }
         			    });
         		complianceService.addRule(rule4);
+        		
+        		ComplianceRule passwordRule = new ComplianceRule("passwordRule", "Password should be greater than 6 characters and match the pattern", 
+        			    config -> {
+        			        try {
+        			            JsonNode configData = objectMapper.readTree(config.getConfigData());
+        			            String password = configData.get("password").asText();
+        			            // Password pattern: at least one uppercase letter, one lowercase letter, one digit, and one special character
+        			            String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{7,}$";
+        			            return password.length() > 6 && Pattern.matches(passwordPattern, password);
+        			        } catch (Exception e) {
+        			            e.printStackTrace();
+        			            return false;
+        			        }
+        			    });
+        		complianceService.addRule(passwordRule);
+        		
+        		
 
        
     }
