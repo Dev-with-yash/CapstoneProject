@@ -9,12 +9,14 @@ import com.example.model.Configuration;
 
 @Service
 public class ComplianceService {
-	 private List<ComplianceRule> rules;
+	
+	    private List<ComplianceRule> rules;
+	    
 	    @Autowired
 	    private AlertService alertService;
 	 
 	
-	   public ComplianceService() {
+	    public ComplianceService() {
 	        this.rules = new ArrayList<>();
 	    }
 
@@ -22,6 +24,10 @@ public class ComplianceService {
 	        this.rules = rules != null ? rules : new ArrayList<>();
 	    }
 	  
+	    public void addRule(ComplianceRule rule) {
+	    	rules.add(rule);
+	    }
+	    
 	 public List<String> analyzeCompliance(Configuration config) {
 	 List<String> nonCompliantRules = new ArrayList<>();
 	 
@@ -35,7 +41,4 @@ public class ComplianceService {
 	 return nonCompliantRules;
 	 }
 	 
-	 public void addRule(ComplianceRule rule) {
-	        rules.add(rule);
-	 }
 }
