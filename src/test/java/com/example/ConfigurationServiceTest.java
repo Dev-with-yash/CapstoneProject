@@ -19,18 +19,20 @@ public class ConfigurationServiceTest {
  @Test
  public void testSaveConfiguration() {
 	 Configuration config = new Configuration();
-     config.setDeviceId("device_001");
-     config.setConfigData("{ \"mode\": \"auto\", \"threshold\": 75, \"enabledFeatures\": [\"feature1\",  \"feature2\"] }");
-     config.setVersion(1);
+     config.setDeviceId("device_2");
+     config.setConfigData("{\"gateway\": \"10.10.3.1\", \"password\": \"Askdj@12344\", \"ipAddress\": \"192.168.2.2.1\", \"deviceName\": \"Device 2\", \"dnsServers\": [\"8.8.8.8\", \"8.8.4.4\"], \"subnetMask\": \"0.0.255.255\"}");
+     config.setVersion(2);
 //     config.setId(123456789L);
      config.setCreatedAt(LocalDateTime.of(2023, 7, 18, 15, 30));
+     config.setComplianceStatus("something");
 
      Configuration savedConfig = configurationService.saveConfiguration(config);
-     assertEquals("device_001", savedConfig.getDeviceId());
-     assertEquals("{ \"mode\": \"auto\", \"threshold\": 75, \"enabledFeatures\": [\"feature1\", \"feature2\"] }", savedConfig.getConfigData());
-     assertEquals(1, savedConfig.getVersion());
+     assertEquals("device_2", savedConfig.getDeviceId());
+     assertEquals("{\"gateway\": \"10.10.3.1\", \"password\": \"Askdj@12344\", \"ipAddress\": \"192.168.2.2.1\", \"deviceName\": \"Device 2\", \"dnsServers\": [\"8.8.8.8\", \"8.8.4.4\"], \"subnetMask\": \"0.0.255.255\"}", savedConfig.getConfigData());
+     assertEquals(2, savedConfig.getVersion());
 //     assertEquals(123456789L, savedConfig.getId());
      assertEquals(LocalDateTime.of(2023, 7, 18, 15, 30), savedConfig.getCreatedAt());
+     assertEquals("something", savedConfig.getComplianceStatus());
     
 }
  }
